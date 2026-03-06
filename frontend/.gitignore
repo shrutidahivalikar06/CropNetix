@@ -1,0 +1,75 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+env/
+*.egg-info/
+dist/
+build/
+
+# Django specific (if applicable)
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask specific (if applicable)
+instance/
+.webassets-cache
+
+# ML models (optional - if too large)
+*.h5
+*.keras
+*.pkl
+*.joblib
+
+# Frontend
+node_modules/
+frontend/node_modules/
+frontend/build/
+frontend/.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Uploads
+backend/routers/uploads/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# System files
+.DS_Store
+Thumbs.db

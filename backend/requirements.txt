@@ -1,0 +1,13 @@
+# Core ML and image processing
+tensorflow==2.13.0
+pillow
+numpy
+pandas
+
+# Web framework
+fastapi
+uvicorn
+python-multipart
+
+# Optional dependencies for better performance and utils
+requests
