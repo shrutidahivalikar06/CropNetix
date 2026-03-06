@@ -4,25 +4,30 @@ from pydantic import BaseModel
 import shutil
 import os
 from ml.predict import predict_image
-import random
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
-# Allow frontend (React) to connect
+# Allow frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # for hackathon simplicity
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Folder to store uploaded images
 UPLOAD_DIR = "uploads"
+OUTPUT_DIR = "outputs"
+
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# expose images to frontend
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
 
 
-# -------- MODELS --------
 class UserRegister(BaseModel):
     name: str
     email: str
@@ -34,13 +39,11 @@ class UserLogin(BaseModel):
     password: str
 
 
-# -------- ROOT --------
 @app.get("/")
 def root():
     return {"message": "Backend is running successfully"}
 
 
-# -------- AUTH ENDPOINTS (Temporary for frontend) --------
 @app.post("/api/auth/register")
 def register(user: UserRegister):
     return {
@@ -66,18 +69,34 @@ def logout():
 @app.post("/api/predict")
 async def predict(file: UploadFile = File(...)):
 
-    # Save uploaded image
     file_path = os.path.join(UPLOAD_DIR, file.filename)
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    # Send image to ML model
     result = predict_image(file_path)
+
+    # fix windows path slashes
+    original = result["images"]["original"].replace("\\", "/")
+    heatmap = result["images"]["heatmap"].replace("\\", "/")
+    mask = result["images"]["mask"].replace("\\", "/")
+    boundary = result["images"]["boundary"].replace("\\", "/")
 
     return {
         "filename": file.filename,
         "severity": result["severity"],
         "recommendation": result["recommendation"],
-        "confidence": result["confidence"]
+        "confidence": result["confidence"],
+        "lodged_area_percent": result["lodged_area_percent"],
+        "lodging_patches": result["lodging_patches"],
+        "raw_score": result["raw_score"],
+        "method": result["method"],
+        "threshold": result["threshold"],
+
+        "images": {
+            "original": f"http://127.0.0.1:8000/{original}",
+            "heatmap": f"http://127.0.0.1:8000/{heatmap}",
+            "mask": f"http://127.0.0.1:8000/{mask}",
+            "boundary": f"http://127.0.0.1:8000/{boundary}"
+        }
     }

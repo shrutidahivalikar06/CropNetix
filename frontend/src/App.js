@@ -2,145 +2,6 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
-// Language translations
-const translations = {
-  en: {
-    brand: "🌾 CropNetix",
-    tagline: "AI-powered crop health detection for farmers",
-    welcome: "Welcome back",
-    farmer: "Farmer",
-    logout: "Logout",
-    title: "Crop Lodging Detection System 🌾",
-    subtitle: "Upload a field image to detect lodging severity using AI",
-    selectImage: "Select Image Files",
-    dragDrop: "⬆️ Or Drag & Drop an Image Here",
-    uploadedImage: "Uploaded Image",
-    analyze: "Analyze Image",
-    analyzing: "Analyzing Image with AI...",
-    detectionResult: "Detection Result",
-    login: "Login",
-    register: "Register",
-    farmerLogin: "Farmer Login",
-    farmerRegistration: "Farmer Registration",
-    email: "Email Address",
-    password: "Password",
-    confirmPassword: "Confirm Password",
-    fullName: "Full Name",
-    phoneNumber: "Phone Number",
-    farmLocation: "Farm Location",
-    dontHaveAccount: "Don't have an account?",
-    alreadyHaveAccount: "Already have an account?",
-    registerHere: "Register here",
-    loginHere: "Login here",
-    loggingIn: "Logging in...",
-    registering: "Registering...",
-    profile: "Farmer Profile",
-    editProfile: "Edit Profile",
-    saveChanges: "Save Changes",
-    cancel: "Cancel",
-    personalInfo: "Personal Information",
-    farmInfo: "Farm Information",
-    memberSince: "Member Since",
-    totalScans: "Total Scans",
-    lastActive: "Last Active",
-    language: "Language",
-    selectLanguage: "Select Language",
-    english: "English",
-    hindi: "हिन्दी",
-    marathi: "मराठी"
-  },
-  hi: {
-    brand: "🌾 क्रॉपनेटिक्स",
-    tagline: "किसानों के लिए AI-संचालित फसल स्वास्थ्य जांच",
-    welcome: "वापसी पर स्वागत है",
-    farmer: "किसान",
-    logout: "लॉग आउट",
-    title: "फसल लॉजिंग डिटेक्शन सिस्टम 🌾",
-    subtitle: "AI का उपयोग करके फसल लॉजिंग की गंभीरता का पता लगाने के लिए फ़ील्ड छवि अपलोड करें",
-    selectImage: "छवि फ़ाइलें चुनें",
-    dragDrop: "⬆️ या छवि को यहाँ खींचें और छोड़ें",
-    uploadedImage: "अपलोड की गई छवि",
-    analyze: "छवि का विश्लेषण करें",
-    analyzing: "AI के साथ छवि का विश्लेषण हो रहा है...",
-    detectionResult: "पहचान परिणाम",
-    login: "लॉग इन",
-    register: "पंजीकरण",
-    farmerLogin: "किसान लॉग इन",
-    farmerRegistration: "किसान पंजीकरण",
-    email: "ईमेल पता",
-    password: "पासवर्ड",
-    confirmPassword: "पासवर्ड की पुष्टि करें",
-    fullName: "पूरा नाम",
-    phoneNumber: "फ़ोन नंबर",
-    farmLocation: "खेत का स्थान",
-    dontHaveAccount: "खाता नहीं है?",
-    alreadyHaveAccount: "पहले से ही खाता है?",
-    registerHere: "यहाँ पंजीकरण करें",
-    loginHere: "यहाँ लॉग इन करें",
-    loggingIn: "लॉग इन हो रहा है...",
-    registering: "पंजीकरण हो रहा है...",
-    profile: "किसान प्रोफ़ाइल",
-    editProfile: "प्रोफ़ाइल संपादित करें",
-    saveChanges: "परिवर्तन सहेजें",
-    cancel: "रद्द करें",
-    personalInfo: "व्यक्तिगत जानकारी",
-    farmInfo: "खेत की जानकारी",
-    memberSince: "सदस्यता से",
-    totalScans: "कुल स्कैन",
-    lastActive: "पिछली गतिविधि",
-    language: "भाषा",
-    selectLanguage: "भाषा चुनें",
-    english: "English",
-    hindi: "हिन्दी",
-    marathi: "मराठी"
-  },
-  mr: {
-    brand: "🌾 क्रॉपनेटिक्स",
-    tagline: "शेतकऱ्यांसाठी AI-चालित पीक आरोग्य तपासणी",
-    welcome: "पुन्हा स्वागत आहे",
-    farmer: "शेतकरी",
-    logout: "लॉगआउट",
-    title: "पीक लॉजिंग डिटेक्शन सिस्टम 🌾",
-    subtitle: "AI वापरून पीक लॉजिंगची तीव्रता शोधण्यासाठी फील्ड प्रतिमा अपलोड करा",
-    selectImage: "प्रतिमा फाइल्स निवडा",
-    dragDrop: "⬆️ किंवा प्रतिमा येथे ड्रॅग आणि ड्रॉप करा",
-    uploadedImage: "अपलोड केलेली प्रतिमा",
-    analyze: "प्रतिमेचे विश्लेषण करा",
-    analyzing: "AI सह प्रतिमेचे विश्लेषण होत आहे...",
-    detectionResult: "शोध परिणाम",
-    login: "लॉगिन",
-    register: "नोंदणी",
-    farmerLogin: "शेतकरी लॉगिन",
-    farmerRegistration: "शेतकरी नोंदणी",
-    email: "ईमेल पत्ता",
-    password: "पासवर्ड",
-    confirmPassword: "पासवर्डची पुष्टी करा",
-    fullName: "पूर्ण नाव",
-    phoneNumber: "फोन नंबर",
-    farmLocation: "शेताचे स्थान",
-    dontHaveAccount: "खाते नाही?",
-    alreadyHaveAccount: "आधीपासून खाते आहे?",
-    registerHere: "येथे नोंदणी करा",
-    loginHere: "येथे लॉगिन करा",
-    loggingIn: "लॉगिन होत आहे...",
-    registering: "नोंदणी होत आहे...",
-    profile: "शेतकरी प्रोफाइल",
-    editProfile: "प्रोफाइल संपादित करा",
-    saveChanges: "बदल जतन करा",
-    cancel: "रद्द करा",
-    personalInfo: "वैयक्तिक माहिती",
-    farmInfo: "शेत माहिती",
-    memberSince: "सदस्यत्वापासून",
-    totalScans: "एकूण स्कॅन",
-    lastActive: "शेवटचा सक्रिय",
-    language: "भाषा",
-    selectLanguage: "भाषा निवडा",
-    english: "English",
-    hindi: "हिन्दी",
-    marathi: "मराठी"
-  }
-};
-
 function App() {
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -150,11 +11,6 @@ function App() {
   const [showLogin, setShowLogin] = useState(true);
   const [user, setUser] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
-  const [editingProfile, setEditingProfile] = useState(false);
-  
-  // Language state
-  const [language, setLanguage] = useState('en');
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -186,17 +42,12 @@ function App() {
   const [registerSuccess, setRegisterSuccess] = useState("");
   const [apiLoading, setApiLoading] = useState(false);
   const [profileUpdateSuccess, setProfileUpdateSuccess] = useState("");
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  // Get current language translations
-  const t = translations[language];
-
-  // Check for existing token on component mount
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     const userData = localStorage.getItem("user");
-    const savedLanguage = localStorage.getItem("language") || "en";
-    
-    setLanguage(savedLanguage);
     
     if (token && userData) {
       try {
@@ -228,13 +79,12 @@ function App() {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".tiff", ".bmp"]
+      "image/*": [".jpg", ".jpeg", ".png"]
     }
   });
 
   const analyzeImage = async () => {
     if (!imageFile) return;
-
     setLoading(true);
     setResult(null);
 
@@ -242,42 +92,36 @@ function App() {
     formData.append("file", imageFile);
 
     try {
-      const response = await fetch("http://localhost:8000/api/predict", {
+      const response = await fetch("http://127.0.0.1:8000/api/predict", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
         },
-        body: formData,
+        body: formData
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setResult(data);
-
         if (user) {
+          // Update user data with response from server if needed
           const updatedUser = {
             ...user,
             totalScans: (user?.totalScans || 0) + 1,
+            lastActive: new Date().toISOString()
           };
           setUser(updatedUser);
           localStorage.setItem("user", JSON.stringify(updatedUser));
         }
       } else {
-        setResult({
-          error: data.detail 
-            ? (typeof data.detail === "string" 
-                ? data.detail 
-                : JSON.stringify(data.detail))
-            : "Error analyzing image",
-        });
+        setResult({ error: data.detail || "Prediction failed" });
       }
     } catch (error) {
-      console.error("Analysis error:", error);
-      setResult({ error: "Failed to connect to server" });
-    } finally {
-      setLoading(false);
+      console.error(error);
+      setResult({ error: "Server connection failed" });
     }
+    setLoading(false);
   };
 
   const handleLoginChange = (e) => {
@@ -319,36 +163,25 @@ function App() {
     e.preventDefault();
     setLoginError("");
     setApiLoading(true);
-    
-    if (!loginData.email || !loginData.password) {
-      setLoginError("Please fill in all fields");
-      setApiLoading(false);
-      return;
-    }
-    
+
     try {
-      // Your backend expects JSON with email field
-      const response = await fetch("http://localhost:8000/api/auth/login", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          email: loginData.email,
-          password: loginData.password
-        })
+        body: JSON.stringify(loginData)
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
-        // Store token (your backend returns "token")
         localStorage.setItem("access_token", data.token);
         
-        // Create user object from login response
-        const userWithStats = {
+        // Use user data from response if available
+        const userData = data.user || {
           email: loginData.email,
-          name: loginData.email.split('@')[0], // Temporary name from email
+          name: loginData.email.split('@')[0],
           phone: "",
           farm_location: "",
           totalScans: 0,
@@ -356,29 +189,22 @@ function App() {
           lastActive: new Date().toISOString()
         };
         
-        localStorage.setItem("user", JSON.stringify(userWithStats));
-        setUser(userWithStats);
+        localStorage.setItem("user", JSON.stringify(userData));
+        setUser(userData);
         setProfileData({
-          name: userWithStats.name,
-          email: userWithStats.email,
-          phone: "",
-          farm_location: "",
-          profile_picture: null
+          name: userData.name || "",
+          email: userData.email || "",
+          phone: userData.phone || "",
+          farm_location: userData.farm_location || "",
+          profile_picture: userData.profile_picture || null
         });
         setIsLoggedIn(true);
         setLoginData({ email: "", password: "" });
-        
       } else {
-        // Handle error with proper formatting
-        setLoginError(
-          typeof data.detail === "string"
-            ? data.detail
-            : data.detail?.[0]?.msg || "Invalid email or password"
-        );
+        setLoginError(data.detail || "Invalid login credentials");
       }
     } catch (error) {
-      console.error("Login error:", error);
-      setLoginError("Failed to connect to server. Please try again.");
+      setLoginError("Server connection failed");
     } finally {
       setApiLoading(false);
     }
@@ -389,44 +215,40 @@ function App() {
     setRegisterError("");
     setRegisterSuccess("");
     setApiLoading(true);
-    
-    // Validation
-    if (!registerData.name || !registerData.email || !registerData.password || !registerData.confirmPassword) {
+
+    if (!registerData.name || !registerData.email || !registerData.password) {
       setRegisterError("Please fill in all required fields");
       setApiLoading(false);
       return;
     }
-    
+
     if (registerData.password !== registerData.confirmPassword) {
       setRegisterError("Passwords do not match");
       setApiLoading(false);
       return;
     }
-    
+
     if (registerData.password.length < 6) {
-      setRegisterError("Password must be at least 6 characters long");
+      setRegisterError("Password must be at least 6 characters");
       setApiLoading(false);
       return;
     }
-    
-    // Remove confirmPassword before sending
+
     const { confirmPassword, ...registrationData } = registerData;
-    
+
     try {
-      const response = await fetch("http://localhost:8000/api/auth/register", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/register", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(registrationData)
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
         setRegisterSuccess("Registration successful! Please login.");
-        
-        // Reset form
         setRegisterData({
           name: "",
           email: "",
@@ -435,23 +257,15 @@ function App() {
           farm_location: "",
           phone: ""
         });
-        
-        // Switch to login after 2 seconds
         setTimeout(() => {
           setShowLogin(true);
           setRegisterSuccess("");
         }, 2000);
       } else {
-        // Handle error with proper formatting
-        setRegisterError(
-          typeof data.detail === "string"
-            ? data.detail
-            : data.detail?.[0]?.msg || "Registration failed. Please try again."
-        );
+        setRegisterError(data.detail || "Registration failed");
       }
     } catch (error) {
-      console.error("Registration error:", error);
-      setRegisterError("Failed to connect to server. Please try again.");
+      setRegisterError("Server connection failed");
     } finally {
       setApiLoading(false);
     }
@@ -461,9 +275,9 @@ function App() {
     e.preventDefault();
     setApiLoading(true);
     setProfileUpdateSuccess("");
-    
+
     try {
-      const response = await fetch("http://localhost:8000/api/auth/update-profile", {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/update-profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -472,28 +286,34 @@ function App() {
         body: JSON.stringify({
           name: profileData.name,
           phone: profileData.phone,
-          farm_location: profileData.farm_location
+          farm_location: profileData.farm_location,
+          profile_picture: profileData.profile_picture
         })
       });
-      
+
       const data = await response.json();
-      
+
       if (response.ok) {
-        const updatedUser = { ...user, ...data };
+        // Use the updated user data from response
+        const updatedUser = data.user || {
+          ...user,
+          name: profileData.name,
+          phone: profileData.phone,
+          farm_location: profileData.farm_location,
+          profile_picture: profileData.profile_picture
+        };
+        
         setUser(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
         setProfileUpdateSuccess("Profile updated successfully!");
         setEditingProfile(false);
+        setShowProfileDropdown(false);
         
         setTimeout(() => {
           setProfileUpdateSuccess("");
         }, 3000);
       } else {
-        setProfileUpdateSuccess(
-          typeof data.detail === "string"
-            ? data.detail
-            : "Failed to update profile"
-        );
+        setProfileUpdateSuccess(data.detail || "Failed to update profile");
       }
     } catch (error) {
       console.error("Profile update error:", error);
@@ -503,43 +323,34 @@ function App() {
     }
   };
 
-  const handleLogout = () => {
-    // Call logout endpoint
-    fetch("http://localhost:8000/api/auth/logout", {
+  const logout = () => {
+    // Optional: Call logout endpoint
+    fetch("http://127.0.0.1:8000/api/auth/logout", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("access_token")}`
       }
     }).catch(err => console.log("Logout error:", err));
     
-    // Clear local storage
     localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
     localStorage.removeItem("user");
-    
-    // Reset state
     setIsLoggedIn(false);
     setUser(null);
     setImage(null);
-    setImageFile(null);
     setResult(null);
     setShowProfile(false);
     setEditingProfile(false);
+    setShowProfileDropdown(false);
   };
 
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-    localStorage.setItem("language", lang);
-    setShowLanguageDropdown(false);
-  };
-
-  // Format date
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
     try {
-      return new Date(dateString).toLocaleDateString(
-        language === 'en' ? 'en-US' : language === 'hi' ? 'hi-IN' : 'mr-IN'
-      );
+      return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
     } catch (e) {
       return "Invalid date";
     }
@@ -547,14 +358,10 @@ function App() {
 
   // Profile View Component
   const ProfileView = () => (
-    <div className="profile-container">
+    <div className="profile-full-view">
       <div className="profile-header">
-        <h2>{t.profile}</h2>
-        {!editingProfile && (
-          <button className="edit-profile-btn" onClick={() => setEditingProfile(true)}>
-            {t.editProfile}
-          </button>
-        )}
+        <h2>Farmer Profile</h2>
+        <button className="close-profile" onClick={() => setShowProfile(false)}>✕</button>
       </div>
 
       {profileUpdateSuccess && (
@@ -563,436 +370,592 @@ function App() {
         </div>
       )}
 
-      <div className="profile-content">
-        <div className="profile-picture-section">
-          <div className="profile-picture">
+      <div className="profile-content-full">
+        <div className="profile-left">
+          <div className="profile-picture-large">
             {profileData.profile_picture ? (
               <img src={profileData.profile_picture} alt="Profile" />
             ) : (
-              <div className="profile-initials">
+              <div className="profile-initials-large">
                 {user?.name?.charAt(0).toUpperCase() || "F"}
               </div>
             )}
           </div>
+          
           {editingProfile && (
-            <div className="profile-picture-upload">
+            <div className="profile-picture-upload-full">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleProfilePictureChange}
-                id="profile-pic-input"
+                id="profile-pic-input-full"
               />
-              <label htmlFor="profile-pic-input">Change Photo</label>
+              <label htmlFor="profile-pic-input-full">Change Photo</label>
             </div>
           )}
         </div>
 
-        {editingProfile ? (
-          <form className="profile-edit-form" onSubmit={handleProfileUpdate}>
-            <div className="form-group">
-              <label>{t.fullName}</label>
-              <input
-                type="text"
-                name="name"
-                value={profileData.name}
-                onChange={handleProfileChange}
-                required
-                disabled={apiLoading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>{t.email}</label>
-              <input
-                type="email"
-                name="email"
-                value={profileData.email}
-                disabled
-                className="disabled-input"
-              />
-              <small>Email cannot be changed</small>
-            </div>
-
-            <div className="form-group">
-              <label>{t.phoneNumber}</label>
-              <input
-                type="tel"
-                name="phone"
-                value={profileData.phone}
-                onChange={handleProfileChange}
-                disabled={apiLoading}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>{t.farmLocation}</label>
-              <input
-                type="text"
-                name="farm_location"
-                value={profileData.farm_location}
-                onChange={handleProfileChange}
-                disabled={apiLoading}
-              />
-            </div>
-
-            <div className="profile-edit-actions">
-              <button type="submit" className="save-profile-btn" disabled={apiLoading}>
-                {apiLoading ? "Saving..." : t.saveChanges}
-              </button>
-              <button 
-                type="button" 
-                className="cancel-profile-btn"
-                onClick={() => {
-                  setEditingProfile(false);
-                  setProfileData({
-                    name: user?.name || "",
-                    email: user?.email || "",
-                    phone: user?.phone || "",
-                    farm_location: user?.farm_location || "",
-                    profile_picture: user?.profile_picture || null
-                  });
-                }}
-                disabled={apiLoading}
-              >
-                {t.cancel}
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="profile-details">
-            <div className="profile-info-section">
-              <h3>{t.personalInfo}</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="info-label">{t.fullName}:</span>
-                  <span className="info-value">{user?.name}</span>
+        <div className="profile-right">
+          {editingProfile ? (
+            <form className="profile-edit-form-full" onSubmit={handleProfileUpdate}>
+              <div className="form-row">
+                <div className="form-group-full">
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={profileData.name}
+                    onChange={handleProfileChange}
+                    required
+                    disabled={apiLoading}
+                  />
                 </div>
-                <div className="info-item">
-                  <span className="info-label">{t.email}:</span>
-                  <span className="info-value">{user?.email}</span>
+
+                <div className="form-group-full">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={profileData.email}
+                    disabled
+                    className="disabled-input"
+                  />
                 </div>
-                <div className="info-item">
-                  <span className="info-label">{t.phoneNumber}:</span>
-                  <span className="info-value">{user?.phone || "Not provided"}</span>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group-full">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={profileData.phone}
+                    onChange={handleProfileChange}
+                    placeholder="Enter phone number"
+                    disabled={apiLoading}
+                  />
+                </div>
+
+                <div className="form-group-full">
+                  <label>Farm Location</label>
+                  <input
+                    type="text"
+                    name="farm_location"
+                    value={profileData.farm_location}
+                    onChange={handleProfileChange}
+                    placeholder="Enter farm location"
+                    disabled={apiLoading}
+                  />
+                </div>
+              </div>
+
+              <div className="profile-edit-actions-full">
+                <button type="submit" className="save-profile-btn-full" disabled={apiLoading}>
+                  {apiLoading ? "Saving..." : "Save Changes"}
+                </button>
+                <button 
+                  type="button" 
+                  className="cancel-profile-btn-full"
+                  onClick={() => {
+                    setEditingProfile(false);
+                    setProfileData({
+                      name: user?.name || "",
+                      email: user?.email || "",
+                      phone: user?.phone || "",
+                      farm_location: user?.farm_location || "",
+                      profile_picture: user?.profile_picture || null
+                    });
+                  }}
+                  disabled={apiLoading}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="profile-details-full">
+              <div className="info-section">
+                <h3>Personal Information</h3>
+                <div className="info-grid-full">
+                  <div className="info-item-full">
+                    <span className="info-label">Full Name</span>
+                    <span className="info-value">{user?.name || "Not set"}</span>
+                  </div>
+                  <div className="info-item-full">
+                    <span className="info-label">Email</span>
+                    <span className="info-value">{user?.email}</span>
+                  </div>
+                  <div className="info-item-full">
+                    <span className="info-label">Phone</span>
+                    <span className="info-value">{user?.phone || "Not provided"}</span>
+                  </div>
+                  <div className="info-item-full">
+                    <span className="info-label">Farm Location</span>
+                    <span className="info-value">{user?.farm_location || "Not provided"}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="info-section">
+                <h3>Farm Statistics</h3>
+                <div className="stats-grid-full">
+                  <div className="stat-card">
+                    <span className="stat-value-large">{user?.totalScans || 0}</span>
+                    <span className="stat-label">Total Scans</span>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-value-large">{formatDate(user?.memberSince).split(',')[0]}</span>
+                    <span className="stat-label">Member Since</span>
+                  </div>
+                  <div className="stat-card">
+                    <span className="stat-value-large">{formatDate(user?.lastActive).split(',')[0]}</span>
+                    <span className="stat-label">Last Active</span>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div className="profile-info-section">
-              <h3>{t.farmInfo}</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="info-label">{t.farmLocation}:</span>
-                  <span className="info-value">{user?.farm_location || "Not provided"}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">{t.memberSince}:</span>
-                  <span className="info-value">{formatDate(user?.memberSince)}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">{t.totalScans}:</span>
-                  <span className="info-value">{user?.totalScans || 0}</span>
-                </div>
-                <div className="info-item">
-                  <span className="info-label">{t.lastActive}:</span>
-                  <span className="info-value">{formatDate(user?.lastActive)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
 
-  // If not logged in, show login/register page
+  // Login Page
   if (!isLoggedIn) {
     return (
-      <div className="container">
-        <div className="main-card">
-          <div className="header-with-controls">
-            <div>
-              <h1 className="brand">{t.brand}</h1>
-              <p className="tagline">{t.tagline}</p>
+      <div className="app">
+        <div className="gradient-bg">
+          <div className="gradient-sphere sphere-1"></div>
+          <div className="gradient-sphere sphere-2"></div>
+          <div className="gradient-sphere sphere-3"></div>
+        </div>
+
+        <div className="login-wrapper">
+          <div className="login-card">
+            <div className="login-header">
+              <div className="logo-icon">🌾</div>
+              <h1 className="login-title">CropNetix</h1>
+              <p className="login-subtitle">AI-Powered Crop Health Detection</p>
             </div>
-            <div className="language-selector">
-              <button 
-                className="language-btn"
-                onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-              >
-                🌐 {language === 'en' ? 'English' : language === 'hi' ? 'हिन्दी' : 'मराठी'}
-              </button>
-              {showLanguageDropdown && (
-                <div className="language-dropdown">
-                  <button onClick={() => changeLanguage('en')}>English</button>
-                  <button onClick={() => changeLanguage('hi')}>हिन्दी</button>
-                  <button onClick={() => changeLanguage('mr')}>मराठी</button>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="auth-container">
+
             <div className="auth-tabs">
               <button 
                 className={`auth-tab ${showLogin ? 'active' : ''}`}
                 onClick={() => setShowLogin(true)}
               >
-                {t.login}
+                Login
               </button>
               <button 
                 className={`auth-tab ${!showLogin ? 'active' : ''}`}
                 onClick={() => setShowLogin(false)}
               >
-                {t.register}
+                Create Account
               </button>
             </div>
-            
+
             {showLogin ? (
-              <form className="auth-form" onSubmit={handleLogin}>
-                <h2>{t.farmerLogin}</h2>
-                
-                {loginError && <div className="error-message">{loginError}</div>}
-                
-                <div className="form-group">
-                  <label>{t.email}</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={loginData.email}
-                    onChange={handleLoginChange}
-                    placeholder={t.email}
-                    required
-                    disabled={apiLoading}
-                  />
+              <div className="login-form-container">
+                <h2>Welcome Back</h2>
+                <p className="form-subtitle">Sign in to continue to your dashboard</p>
+
+                {loginError && (
+                  <div className="error-alert">
+                    <span className="error-icon">⚠️</span>
+                    {loginError}
+                  </div>
+                )}
+
+                <form onSubmit={handleLogin} className="login-form">
+                  <div className="input-group">
+                    <label>Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="farmer@example.com"
+                      value={loginData.email}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="••••••••"
+                      value={loginData.password}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="login-submit-btn" disabled={apiLoading}>
+                    {apiLoading ? "Signing in..." : "Sign In"}
+                    <span className="btn-arrow">→</span>
+                  </button>
+                </form>
+
+                <div className="login-footer">
+                  <p>Don't have an account? <span className="create-account-link" onClick={() => setShowLogin(false)}>Create one here</span></p>
                 </div>
-                
-                <div className="form-group">
-                  <label>{t.password}</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={loginData.password}
-                    onChange={handleLoginChange}
-                    placeholder={t.password}
-                    required
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <button type="submit" className="auth-btn" disabled={apiLoading}>
-                  {apiLoading ? t.loggingIn : t.login}
-                </button>
-                
-                <p className="auth-footer">
-                  {t.dontHaveAccount}{" "}
-                  <span onClick={() => setShowLogin(false)}>{t.registerHere}</span>
-                </p>
-              </form>
+              </div>
             ) : (
-              <form className="auth-form" onSubmit={handleRegister}>
-                <h2>{t.farmerRegistration}</h2>
-                
-                {registerError && <div className="error-message">{registerError}</div>}
-                {registerSuccess && <div className="success-message">{registerSuccess}</div>}
-                
-                <div className="form-group">
-                  <label>{t.fullName} *</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={registerData.name}
-                    onChange={handleRegisterChange}
-                    placeholder={t.fullName}
-                    required
-                    disabled={apiLoading}
-                  />
+              <div className="login-form-container">
+                <h2>Create Account</h2>
+                <p className="form-subtitle">Join CropNetix for smart farming</p>
+
+                {registerError && (
+                  <div className="error-alert">
+                    <span className="error-icon">⚠️</span>
+                    {registerError}
+                  </div>
+                )}
+
+                {registerSuccess && (
+                  <div className="success-alert">
+                    <span className="success-icon">✅</span>
+                    {registerSuccess}
+                  </div>
+                )}
+
+                <form onSubmit={handleRegister} className="login-form">
+                  <div className="input-group">
+                    <label>Full Name *</label>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="John Farmer"
+                      value={registerData.name}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Email Address *</label>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="farmer@example.com"
+                      value={registerData.email}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Phone Number</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="+91 98765 43210"
+                      value={registerData.phone}
+                      onChange={handleRegisterChange}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Farm Location</label>
+                    <input
+                      type="text"
+                      name="farm_location"
+                      placeholder="District, State"
+                      value={registerData.farm_location}
+                      onChange={handleRegisterChange}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Password *</label>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="••••••••"
+                      value={registerData.password}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Confirm Password *</label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="••••••••"
+                      value={registerData.confirmPassword}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" className="login-submit-btn" disabled={apiLoading}>
+                    {apiLoading ? "Creating Account..." : "Create Account"}
+                    <span className="btn-arrow">→</span>
+                  </button>
+                </form>
+
+                <div className="login-footer">
+                  <p>Already have an account? <span className="create-account-link" onClick={() => setShowLogin(true)}>Sign in</span></p>
                 </div>
-                
-                <div className="form-group">
-                  <label>{t.email} *</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={registerData.email}
-                    onChange={handleRegisterChange}
-                    placeholder={t.email}
-                    required
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{t.phoneNumber}</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={registerData.phone}
-                    onChange={handleRegisterChange}
-                    placeholder={t.phoneNumber}
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{t.farmLocation}</label>
-                  <input
-                    type="text"
-                    name="farm_location"
-                    value={registerData.farm_location}
-                    onChange={handleRegisterChange}
-                    placeholder={t.farmLocation}
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{t.password} *</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={registerData.password}
-                    onChange={handleRegisterChange}
-                    placeholder={t.password}
-                    required
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label>{t.confirmPassword} *</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={registerData.confirmPassword}
-                    onChange={handleRegisterChange}
-                    placeholder={t.confirmPassword}
-                    required
-                    disabled={apiLoading}
-                  />
-                </div>
-                
-                <button type="submit" className="auth-btn" disabled={apiLoading}>
-                  {apiLoading ? t.registering : t.register}
-                </button>
-                
-                <p className="auth-footer">
-                  {t.alreadyHaveAccount}{" "}
-                  <span onClick={() => setShowLogin(true)}>{t.loginHere}</span>
-                </p>
-              </form>
+              </div>
             )}
+          </div>
+
+          <div className="feature-grid">
+            <div className="feature-card">
+              <div className="feature-icon">🔬</div>
+              <h3>AI Analysis</h3>
+              <p>Advanced deep learning models for accurate crop lodging detection</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">📊</div>
+              <h3>Real-time Results</h3>
+              <p>Get instant analysis with severity assessment and recommendations</p>
+            </div>
+            <div className="feature-card">
+              <div className="feature-icon">🌱</div>
+              <h3>Smart Farming</h3>
+              <p>Make data-driven decisions to protect your crops</p>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // Main app content (when logged in)
+  // Main App with Profile Dropdown
   return (
-    <div className="container">
-      <div className="main-card">
-        <div className="header-with-controls">
-          <div>
-            <h1 className="brand">{t.brand}</h1>
-            <p className="tagline">{t.tagline}</p>
+    <div className="app">
+      <div className="gradient-bg">
+        <div className="gradient-sphere sphere-1"></div>
+        <div className="gradient-sphere sphere-2"></div>
+        <div className="gradient-sphere sphere-3"></div>
+      </div>
+
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-left">
+            <div className="logo-with-text">
+              <span className="logo-icon-large">🌾</span>
+              <div>
+                <h1 className="header-title">CropNetix</h1>
+                <p className="header-subtitle">Crop Health Intelligence</p>
+              </div>
+            </div>
           </div>
-          <div className="header-actions">
-            <div className="language-selector">
-              <button 
-                className="language-btn"
-                onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
+          <div className="header-right">
+            <div className="user-badge-wrapper">
+              <div 
+                className="user-badge clickable"
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
               >
-                🌐 {language === 'en' ? 'English' : language === 'hi' ? 'हिन्दी' : 'मराठी'}
-              </button>
-              {showLanguageDropdown && (
-                <div className="language-dropdown">
-                  <button onClick={() => changeLanguage('en')}>English</button>
-                  <button onClick={() => changeLanguage('hi')}>हिन्दी</button>
-                  <button onClick={() => changeLanguage('mr')}>मराठी</button>
+                <span className="user-avatar">👨‍🌾</span>
+                <span className="user-name">{user?.name || 'Farmer'}</span>
+                <span className="dropdown-arrow">▼</span>
+              </div>
+              
+              {showProfileDropdown && (
+                <div className="profile-dropdown">
+                  <div className="dropdown-header">
+                    <div className="dropdown-user-info">
+                      <strong>{user?.name}</strong>
+                      <span>{user?.email}</span>
+                    </div>
+                  </div>
+                  <div className="dropdown-menu">
+                    <button onClick={() => {
+                      setShowProfile(true);
+                      setShowProfileDropdown(false);
+                    }}>
+                      <span>👤</span> View Profile
+                    </button>
+                    <button onClick={() => {
+                      setEditingProfile(true);
+                      setShowProfile(true);
+                      setShowProfileDropdown(false);
+                    }}>
+                      <span>✏️</span> Edit Profile
+                    </button>
+                    <div className="dropdown-divider"></div>
+                    <button onClick={logout} className="logout-dropdown">
+                      <span>🚪</span> Logout
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
-            <button className="profile-btn" onClick={() => setShowProfile(!showProfile)}>
-              👤 {t.profile}
-            </button>
-            <button onClick={handleLogout} className="logout-btn" disabled={loading}>
-              {t.logout}
-            </button>
           </div>
         </div>
+      </header>
 
-        {showProfile ? (
-          <ProfileView />
-        ) : (
-          <>
-            <h1 className="title">{t.title}</h1>
-            <p className="subtitle">{t.subtitle}</p>
-
-            <div {...getRootProps()} className="upload-box">
-              <input {...getInputProps()} />
-              <button className="upload-button" disabled={loading}>
-                {t.selectImage}
-              </button>
-              <p>{t.dragDrop}</p>       
-            </div>
-
-            {image && (
-              <div className="preview-section">
-                <h3>{t.uploadedImage}</h3>
-                <img src={image} alt="preview" />
-                <button 
-                  className="analyze-btn" 
-                  onClick={analyzeImage}
-                  disabled={loading}
-                >
-                  {loading ? t.analyzing : t.analyze}
-                </button>
-
-                {loading && <p className="loading-text">{t.analyzing}</p>}
-
-                {result && !loading && !result.error && (
-                  <div className="result-box">
-                    <h2>{t.detectionResult}</h2>
-
-                    <p className="result-text">
-                      <strong>Severity:</strong> {result.severity}
-                    </p>
-
-                    <p className="result-text">
-                      <strong>Recommendation:</strong> {result.recommendation}
-                    </p>
-
-                    <p className="result-text">
-                      <strong>Confidence:</strong> {(result.confidence * 100).toFixed(1)}%
-                    </p>
-
-                    <div className="severity-bar">
-                      <div
-                        className={`severity-fill ${
-                          result.severity?.toLowerCase().includes("severe")
-                            ? "severe"
-                            : result.severity?.toLowerCase().includes("moderate")
-                            ? "moderate"
-                            : "healthy"
-                        }`}
-                        style={{ width: `${result.confidence * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Show prediction error if any */}
-                {result?.error && (
-                  <div className="error-message">
-                    {result.error}
-                  </div>
-                )}
+      <main className="dashboard-main">
+        <div className="dashboard-container">
+          {showProfile ? (
+            <ProfileView />
+          ) : (
+            <>
+              <div className="welcome-section">
+                <h2 className="welcome-title">Crop Lodging Detection System</h2>
+                <p className="welcome-text">
+                  Upload a field image to analyze crop lodging severity using our advanced AI model
+                </p>
               </div>
-            )}
-          </>
-        )}
-      </div>
+
+              <div className="content-grid">
+                <div className="upload-column">
+                  <div className="upload-card">
+                    <div className="card-header">
+                      <h3>Upload Image</h3>
+                      <span className="badge">Required</span>
+                    </div>
+                    
+                    <div {...getRootProps()} className="dropzone">
+                      <input {...getInputProps()} />
+                      <div className="dropzone-content">
+                        <div className="upload-icon">📸</div>
+                        <h4>Drag & Drop</h4>
+                        <p>Click or drag image to upload</p>
+                        <span className="file-types">Supports: JPG, PNG</span>
+                        <button className="browse-btn">Browse Files</button>
+                      </div>
+                    </div>
+
+                    {image && (
+                      <div className="preview-card">
+                        <div className="preview-header">
+                          <h4>Preview</h4>
+                          <span className="preview-badge">Uploaded</span>
+                        </div>
+                        <div className="image-preview">
+                          <img src={image} alt="preview" />
+                        </div>
+                        <button 
+                          onClick={analyzeImage} 
+                          disabled={loading}
+                          className={`analyze-btn ${loading ? 'loading' : ''}`}
+                        >
+                          {loading ? (
+                            <>
+                              <span className="spinner"></span>
+                              Analyzing...
+                            </>
+                          ) : (
+                            <>
+                              <span>Analyze Image</span>
+                              <span className="btn-icon">→</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="results-column">
+                  {loading && (
+                    <div className="loading-card">
+                      <div className="loading-spinner"></div>
+                      <h3>Processing Image</h3>
+                      <p>Our AI model is analyzing your crop image...</p>
+                    </div>
+                  )}
+
+                  {result && !result.error && (
+                    <div className="results-card">
+                      <div className="results-header">
+                        <h3>Analysis Results</h3>
+                        <span className="success-badge">Complete</span>
+                      </div>
+
+                      <div className="severity-meter">
+                        <div className="meter-header">
+                          <span>Severity Level</span>
+                          <span className="severity-value">{result.severity}</span>
+                        </div>
+                        <div className="meter-bar">
+                          <div 
+                            className={`meter-fill ${result.severity?.toLowerCase()}`}
+                            style={{ width: `${result.confidence}%` }}
+                          ></div>
+                        </div>
+                      </div>
+
+                      <div className="stats-grid">
+                        <div className="stat-item">
+                          <span className="stat-label">Confidence</span>
+                          <span className="stat-value">{result.confidence}%</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Lodged Area</span>
+                          <span className="stat-value">{result.lodged_area_percent}%</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Patches</span>
+                          <span className="stat-value">{result.lodging_patches}</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-label">Method</span>
+                          <span className="stat-value">{result.method}</span>
+                        </div>
+                      </div>
+
+                      <div className="recommendation-box">
+                        <h4>Recommendation</h4>
+                        <p>{result.recommendation}</p>
+                      </div>
+
+                      <details className="technical-details">
+                        <summary>Technical Details</summary>
+                        <div className="details-content">
+                          <p><strong>Raw Score:</strong> {result.raw_score}</p>
+                          <p><strong>Threshold:</strong> {result.threshold}</p>
+                        </div>
+                      </details>
+                    </div>
+                  )}
+
+                  {result?.images && (
+                    <div className="visual-analysis-card">
+                      <h3>Visual Analysis</h3>
+                      <div className="image-grid">
+                        <div className="grid-item">
+                          <span className="image-label">Original</span>
+                          <img src={result.images.original} alt="original" />
+                        </div>
+                        <div className="grid-item">
+                          <span className="image-label">Heatmap</span>
+                          <img src={result.images.heatmap} alt="heatmap" />
+                        </div>
+                        <div className="grid-item">
+                          <span className="image-label">Mask</span>
+                          <img src={result.images.mask} alt="mask" />
+                        </div>
+                        <div className="grid-item">
+                          <span className="image-label">Boundary</span>
+                          <img src={result.images.boundary} alt="boundary" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {result?.error && (
+                    <div className="error-card">
+                      <span className="error-icon-large">⚠️</span>
+                      <h3>Analysis Failed</h3>
+                      <p>{result.error}</p>
+                      <button onClick={() => setResult(null)} className="retry-btn">
+                        Try Again
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
