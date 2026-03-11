@@ -20,14 +20,14 @@ def predict_image(img_path):
     prediction = float(model.predict(img_array)[0][0])
 
     # ---------- SEVERITY ----------
-    if prediction < 0.5:
+    if prediction < 0.3:
         severity = "Healthy Crop"
         recommendation = "No action needed"
         confidence = (1 - prediction) * 100
     else:
         confidence = prediction * 100
 
-        if prediction < 0.65:
+        if prediction < 0.5:
             severity = "Mild Lodging"
             recommendation = "Monitor crop for further bending"
 
@@ -47,7 +47,7 @@ def predict_image(img_path):
     filename = os.path.basename(img_path)
 
     heatmap_path = os.path.join("outputs", f"heatmap_{filename}")
-    mask_path = os.path.join("outputs", f"mask_{filename}") 
+    mask_path = os.path.join("outputs", f"mask_{filename}")
     boundary_path = os.path.join("outputs", f"boundary_{filename}")
 
     # Fake heatmap (demo)
@@ -65,11 +65,14 @@ def predict_image(img_path):
     boundary[edges != 0] = [0, 255, 0]
     cv2.imwrite(boundary_path, boundary)
 
+    # ---------- LODGED AREA (FROM MODEL PREDICTION) ----------
+    lodged_area_percent = prediction * 80
+
     return {
         "severity": severity,
         "recommendation": recommendation,
         "confidence": round(confidence, 2),
-        "lodged_area_percent": round(prediction * 100, 2),
+        "lodged_area_percent": round(lodged_area_percent, 2),
         "lodging_patches": int(prediction * 10),
         "raw_score": round(prediction, 3),
         "method": "Grad-CAM++",

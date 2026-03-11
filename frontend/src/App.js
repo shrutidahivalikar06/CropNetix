@@ -1,8 +1,10 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { useTranslation } from "react-i18next";
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [image, setImage] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -67,6 +69,22 @@ function App() {
     }
   }, []);
 
+  const LanguageSwitcher = ({ compact = false }) => (
+    <div className={`lang-switcher ${compact ? "compact" : ""}`}>
+      <span className="lang-label">{t("language")}</span>
+      <select
+        className="lang-select"
+        value={i18n.resolvedLanguage || "en"}
+        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        aria-label={t("language")}
+      >
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+    </div>
+  );
+
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
@@ -115,11 +133,11 @@ function App() {
           localStorage.setItem("user", JSON.stringify(updatedUser));
         }
       } else {
-        setResult({ error: data.detail || "Prediction failed" });
+        setResult({ error: data.detail || t("errors.predictionFailed") });
       }
     } catch (error) {
       console.error(error);
-      setResult({ error: "Server connection failed" });
+      setResult({ error: t("errors.serverConnectionFailed") });
     }
     setLoading(false);
   };
@@ -177,16 +195,18 @@ function App() {
 
       if (response.ok) {
         localStorage.setItem("access_token", data.token);
-        
-        // Use user data from response if available
-        const userData = data.user || {
-          email: loginData.email,
-          name: loginData.email.split('@')[0],
-          phone: "",
-          farm_location: "",
-          totalScans: 0,
-          memberSince: new Date().toISOString(),
-          lastActive: new Date().toISOString()
+
+        // Normalize user data from backend (support different field names)
+        const rawUser = data.user || {};
+        const userData = {
+          email: rawUser.email || loginData.email,
+          name: rawUser.name || loginData.email.split('@')[0],
+          phone: rawUser.phone || rawUser.phone_number || "",
+          farm_location: rawUser.farm_location || rawUser.farmLocation || "",
+          totalScans: rawUser.totalScans ?? rawUser.total_scans ?? 0,
+          memberSince: rawUser.memberSince || rawUser.member_since || new Date().toISOString(),
+          lastActive: rawUser.lastActive || rawUser.last_active || new Date().toISOString(),
+          profile_picture: rawUser.profile_picture || null
         };
         
         localStorage.setItem("user", JSON.stringify(userData));
@@ -201,10 +221,10 @@ function App() {
         setIsLoggedIn(true);
         setLoginData({ email: "", password: "" });
       } else {
-        setLoginError(data.detail || "Invalid login credentials");
+        setLoginError(data.detail || t("errors.invalidLogin"));
       }
     } catch (error) {
-      setLoginError("Server connection failed");
+      setLoginError(t("errors.serverConnectionFailed"));
     } finally {
       setApiLoading(false);
     }
@@ -217,19 +237,19 @@ function App() {
     setApiLoading(true);
 
     if (!registerData.name || !registerData.email || !registerData.password) {
-      setRegisterError("Please fill in all required fields");
+      setRegisterError(t("errors.fillRequired"));
       setApiLoading(false);
       return;
     }
 
     if (registerData.password !== registerData.confirmPassword) {
-      setRegisterError("Passwords do not match");
+      setRegisterError(t("errors.passwordsDontMatch"));
       setApiLoading(false);
       return;
     }
 
     if (registerData.password.length < 6) {
-      setRegisterError("Password must be at least 6 characters");
+      setRegisterError(t("errors.passwordTooShort"));
       setApiLoading(false);
       return;
     }
@@ -248,7 +268,7 @@ function App() {
       const data = await response.json();
 
       if (response.ok) {
-        setRegisterSuccess("Registration successful! Please login.");
+        setRegisterSuccess(t("errors.registrationSuccess"));
         setRegisterData({
           name: "",
           email: "",
@@ -262,10 +282,10 @@ function App() {
           setRegisterSuccess("");
         }, 2000);
       } else {
-        setRegisterError(data.detail || "Registration failed");
+        setRegisterError(data.detail || t("errors.registrationFailed"));
       }
     } catch (error) {
-      setRegisterError("Server connection failed");
+      setRegisterError(t("errors.serverConnectionFailed"));
     } finally {
       setApiLoading(false);
     }
@@ -305,7 +325,7 @@ function App() {
         
         setUser(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
-        setProfileUpdateSuccess("Profile updated successfully!");
+        setProfileUpdateSuccess(t("errors.profileUpdated"));
         setEditingProfile(false);
         setShowProfileDropdown(false);
         
@@ -313,11 +333,11 @@ function App() {
           setProfileUpdateSuccess("");
         }, 3000);
       } else {
-        setProfileUpdateSuccess(data.detail || "Failed to update profile");
+        setProfileUpdateSuccess(data.detail || t("errors.failedToUpdateProfile"));
       }
     } catch (error) {
       console.error("Profile update error:", error);
-      setProfileUpdateSuccess("Failed to connect to server");
+      setProfileUpdateSuccess(t("errors.failedToConnect"));
     } finally {
       setApiLoading(false);
     }
@@ -360,7 +380,7 @@ function App() {
   const ProfileView = () => (
     <div className="profile-full-view">
       <div className="profile-header">
-        <h2>Farmer Profile</h2>
+        <h2>{t("profile.title")}</h2>
         <button className="close-profile" onClick={() => setShowProfile(false)}>✕</button>
       </div>
 
@@ -390,7 +410,7 @@ function App() {
                 onChange={handleProfilePictureChange}
                 id="profile-pic-input-full"
               />
-              <label htmlFor="profile-pic-input-full">Change Photo</label>
+              <label htmlFor="profile-pic-input-full">{t("profile.changePhoto")}</label>
             </div>
           )}
         </div>
@@ -400,7 +420,7 @@ function App() {
             <form className="profile-edit-form-full" onSubmit={handleProfileUpdate}>
               <div className="form-row">
                 <div className="form-group-full">
-                  <label>Full Name</label>
+                  <label>{t("profile.fullName")}</label>
                   <input
                     type="text"
                     name="name"
@@ -412,7 +432,7 @@ function App() {
                 </div>
 
                 <div className="form-group-full">
-                  <label>Email</label>
+                  <label>{t("profile.email")}</label>
                   <input
                     type="email"
                     name="email"
@@ -425,25 +445,25 @@ function App() {
 
               <div className="form-row">
                 <div className="form-group-full">
-                  <label>Phone Number</label>
+                  <label>{t("profile.phoneNumber")}</label>
                   <input
                     type="tel"
                     name="phone"
                     value={profileData.phone}
                     onChange={handleProfileChange}
-                    placeholder="Enter phone number"
+                    placeholder={t("auth.placeholders.phone")}
                     disabled={apiLoading}
                   />
                 </div>
 
                 <div className="form-group-full">
-                  <label>Farm Location</label>
+                  <label>{t("profile.farmLocation")}</label>
                   <input
                     type="text"
                     name="farm_location"
                     value={profileData.farm_location}
                     onChange={handleProfileChange}
-                    placeholder="Enter farm location"
+                    placeholder={t("auth.placeholders.farmLocation")}
                     disabled={apiLoading}
                   />
                 </div>
@@ -451,7 +471,7 @@ function App() {
 
               <div className="profile-edit-actions-full">
                 <button type="submit" className="save-profile-btn-full" disabled={apiLoading}>
-                  {apiLoading ? "Saving..." : "Save Changes"}
+                  {apiLoading ? t("profile.saving") : t("profile.saveChanges")}
                 </button>
                 <button 
                   type="button" 
@@ -468,48 +488,48 @@ function App() {
                   }}
                   disabled={apiLoading}
                 >
-                  Cancel
+                  {t("profile.cancel")}
                 </button>
               </div>
             </form>
           ) : (
             <div className="profile-details-full">
               <div className="info-section">
-                <h3>Personal Information</h3>
+                <h3>{t("profile.personalInfo")}</h3>
                 <div className="info-grid-full">
                   <div className="info-item-full">
-                    <span className="info-label">Full Name</span>
-                    <span className="info-value">{user?.name || "Not set"}</span>
+                    <span className="info-label">{t("profile.fullName")}</span>
+                    <span className="info-value">{user?.name || t("profile.notSet")}</span>
                   </div>
                   <div className="info-item-full">
-                    <span className="info-label">Email</span>
+                    <span className="info-label">{t("profile.email")}</span>
                     <span className="info-value">{user?.email}</span>
                   </div>
                   <div className="info-item-full">
-                    <span className="info-label">Phone</span>
-                    <span className="info-value">{user?.phone || "Not provided"}</span>
+                    <span className="info-label">{t("profile.phone")}</span>
+                    <span className="info-value">{user?.phone || t("profile.notProvided")}</span>
                   </div>
                   <div className="info-item-full">
-                    <span className="info-label">Farm Location</span>
-                    <span className="info-value">{user?.farm_location || "Not provided"}</span>
+                    <span className="info-label">{t("profile.farm_Location")}</span>
+                    <span className="info-value">{user?.farm_location || t("profile.notProvided")}</span>
                   </div>
                 </div>
               </div>
 
               <div className="info-section">
-                <h3>Farm Statistics</h3>
+                <h3>{t("profile.farmStats")}</h3>
                 <div className="stats-grid-full">
                   <div className="stat-card">
                     <span className="stat-value-large">{user?.totalScans || 0}</span>
-                    <span className="stat-label">Total Scans</span>
+                    <span className="stat-label">{t("profile.totalScans")}</span>
                   </div>
                   <div className="stat-card">
                     <span className="stat-value-large">{formatDate(user?.memberSince).split(',')[0]}</span>
-                    <span className="stat-label">Member Since</span>
+                    <span className="stat-label">{t("profile.memberSince")}</span>
                   </div>
                   <div className="stat-card">
                     <span className="stat-value-large">{formatDate(user?.lastActive).split(',')[0]}</span>
-                    <span className="stat-label">Last Active</span>
+                    <span className="stat-label">{t("profile.lastActive")}</span>
                   </div>
                 </div>
               </div>
@@ -534,8 +554,9 @@ function App() {
           <div className="login-card">
             <div className="login-header">
               <div className="logo-icon">🌾</div>
-              <h1 className="login-title">CropNetix</h1>
-              <p className="login-subtitle">AI-Powered Crop Health Detection</p>
+              <h1 className="login-title">{t("app.name")}</h1>
+              <p className="login-subtitle">{t("app.tagline")}</p>
+              <LanguageSwitcher compact />
             </div>
 
             <div className="auth-tabs">
@@ -543,20 +564,20 @@ function App() {
                 className={`auth-tab ${showLogin ? 'active' : ''}`}
                 onClick={() => setShowLogin(true)}
               >
-                Login
+                {t("auth.login")}
               </button>
               <button 
                 className={`auth-tab ${!showLogin ? 'active' : ''}`}
                 onClick={() => setShowLogin(false)}
               >
-                Create Account
+                {t("auth.createAccount")}
               </button>
             </div>
 
             {showLogin ? (
               <div className="login-form-container">
-                <h2>Welcome Back</h2>
-                <p className="form-subtitle">Sign in to continue to your dashboard</p>
+                <h2>{t("auth.welcomeBack")}</h2>
+                <p className="form-subtitle">{t("auth.signInSubtitle")}</p>
 
                 {loginError && (
                   <div className="error-alert">
@@ -567,11 +588,11 @@ function App() {
 
                 <form onSubmit={handleLogin} className="login-form">
                   <div className="input-group">
-                    <label>Email Address</label>
+                    <label>{t("auth.emailAddress")}</label>
                     <input
                       type="email"
                       name="email"
-                      placeholder="farmer@example.com"
+                      placeholder={t("auth.placeholders.email")}
                       value={loginData.email}
                       onChange={handleLoginChange}
                       required
@@ -579,11 +600,11 @@ function App() {
                   </div>
 
                   <div className="input-group">
-                    <label>Password</label>
+                    <label>{t("auth.password")}</label>
                     <input
                       type="password"
                       name="password"
-                      placeholder="••••••••"
+                      placeholder={t("auth.placeholders.password")}
                       value={loginData.password}
                       onChange={handleLoginChange}
                       required
@@ -591,19 +612,22 @@ function App() {
                   </div>
 
                   <button type="submit" className="login-submit-btn" disabled={apiLoading}>
-                    {apiLoading ? "Signing in..." : "Sign In"}
+                    {apiLoading ? t("auth.signingIn") : t("auth.signIn")}
                     <span className="btn-arrow">→</span>
                   </button>
                 </form>
 
                 <div className="login-footer">
-                  <p>Don't have an account? <span className="create-account-link" onClick={() => setShowLogin(false)}>Create one here</span></p>
+                  <p>
+                    {t("auth.dontHaveAccount")}{" "}
+                    <span className="create-account-link" onClick={() => setShowLogin(false)}>{t("auth.createOneHere")}</span>
+                  </p>
                 </div>
               </div>
             ) : (
               <div className="login-form-container">
-                <h2>Create Account</h2>
-                <p className="form-subtitle">Join CropNetix for smart farming</p>
+                <h2>{t("auth.createAccountTitle")}</h2>
+                <p className="form-subtitle">{t("auth.createAccountSubtitle")}</p>
 
                 {registerError && (
                   <div className="error-alert">
@@ -621,11 +645,11 @@ function App() {
 
                 <form onSubmit={handleRegister} className="login-form">
                   <div className="input-group">
-                    <label>Full Name *</label>
+                    <label>{t("auth.fullNameRequired")}</label>
                     <input
                       type="text"
                       name="name"
-                      placeholder="John Farmer"
+                      placeholder={t("auth.placeholders.fullName")}
                       value={registerData.name}
                       onChange={handleRegisterChange}
                       required
@@ -633,11 +657,11 @@ function App() {
                   </div>
 
                   <div className="input-group">
-                    <label>Email Address *</label>
+                    <label>{t("auth.emailAddressRequired")}</label>
                     <input
                       type="email"
                       name="email"
-                      placeholder="farmer@example.com"
+                      placeholder={t("auth.placeholders.email")}
                       value={registerData.email}
                       onChange={handleRegisterChange}
                       required
@@ -645,33 +669,33 @@ function App() {
                   </div>
 
                   <div className="input-group">
-                    <label>Phone Number</label>
+                    <label>{t("auth.phoneNumber")}</label>
                     <input
                       type="tel"
                       name="phone"
-                      placeholder="+91 98765 43210"
+                      placeholder={t("auth.placeholders.phone")}
                       value={registerData.phone}
                       onChange={handleRegisterChange}
                     />
                   </div>
 
                   <div className="input-group">
-                    <label>Farm Location</label>
+                    <label>{t("auth.farmLocation")}</label>
                     <input
                       type="text"
                       name="farm_location"
-                      placeholder="District, State"
+                      placeholder={t("auth.placeholders.farmLocation")}
                       value={registerData.farm_location}
                       onChange={handleRegisterChange}
                     />
                   </div>
 
                   <div className="input-group">
-                    <label>Password *</label>
+                    <label>{t("auth.password")} *</label>
                     <input
                       type="password"
                       name="password"
-                      placeholder="••••••••"
+                      placeholder={t("auth.placeholders.password")}
                       value={registerData.password}
                       onChange={handleRegisterChange}
                       required
@@ -679,11 +703,11 @@ function App() {
                   </div>
 
                   <div className="input-group">
-                    <label>Confirm Password *</label>
+                    <label>{t("auth.confirmPasswordRequired")}</label>
                     <input
                       type="password"
                       name="confirmPassword"
-                      placeholder="••••••••"
+                      placeholder={t("auth.placeholders.password")}
                       value={registerData.confirmPassword}
                       onChange={handleRegisterChange}
                       required
@@ -691,13 +715,16 @@ function App() {
                   </div>
 
                   <button type="submit" className="login-submit-btn" disabled={apiLoading}>
-                    {apiLoading ? "Creating Account..." : "Create Account"}
+                    {apiLoading ? t("auth.creatingAccount") : t("auth.createAccountButton")}
                     <span className="btn-arrow">→</span>
                   </button>
                 </form>
 
                 <div className="login-footer">
-                  <p>Already have an account? <span className="create-account-link" onClick={() => setShowLogin(true)}>Sign in</span></p>
+                  <p>
+                    {t("auth.alreadyHaveAccount")}{" "}
+                    <span className="create-account-link" onClick={() => setShowLogin(true)}>{t("auth.signInHere")}</span>
+                  </p>
                 </div>
               </div>
             )}
@@ -706,18 +733,18 @@ function App() {
           <div className="feature-grid">
             <div className="feature-card">
               <div className="feature-icon">🔬</div>
-              <h3>AI Analysis</h3>
-              <p>Advanced deep learning models for accurate crop lodging detection</p>
+              <h3>{t("features.aiAnalysis")}</h3>
+              <p>{t("features.aiAnalysisDesc")}</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">📊</div>
-              <h3>Real-time Results</h3>
-              <p>Get instant analysis with severity assessment and recommendations</p>
+              <h3>{t("features.realTimeResults")}</h3>
+              <p>{t("features.realTimeResultsDesc")}</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🌱</div>
-              <h3>Smart Farming</h3>
-              <p>Make data-driven decisions to protect your crops</p>
+              <h3>{t("features.smartFarming")}</h3>
+              <p>{t("features.smartFarmingDesc")}</p>
             </div>
           </div>
         </div>
@@ -740,12 +767,13 @@ function App() {
             <div className="logo-with-text">
               <span className="logo-icon-large">🌾</span>
               <div>
-                <h1 className="header-title">CropNetix</h1>
-                <p className="header-subtitle">Crop Health Intelligence</p>
+                <h1 className="header-title">{t("app.name")}</h1>
+                <p className="header-subtitle">{t("app.headerSubtitle")}</p>
               </div>
             </div>
           </div>
           <div className="header-right">
+            <LanguageSwitcher />
             <div className="user-badge-wrapper">
               <div 
                 className="user-badge clickable"
@@ -769,18 +797,18 @@ function App() {
                       setShowProfile(true);
                       setShowProfileDropdown(false);
                     }}>
-                      <span>👤</span> View Profile
+                      <span>👤</span> {t("dashboard.viewProfile")}
                     </button>
                     <button onClick={() => {
                       setEditingProfile(true);
                       setShowProfile(true);
                       setShowProfileDropdown(false);
                     }}>
-                      <span>✏️</span> Edit Profile
+                      <span>✏️</span> {t("dashboard.editProfile")}
                     </button>
                     <div className="dropdown-divider"></div>
                     <button onClick={logout} className="logout-dropdown">
-                      <span>🚪</span> Logout
+                      <span>🚪</span> {t("dashboard.logout")}
                     </button>
                   </div>
                 </div>
@@ -797,9 +825,9 @@ function App() {
           ) : (
             <>
               <div className="welcome-section">
-                <h2 className="welcome-title">Crop Lodging Detection System</h2>
+                <h2 className="welcome-title">{t("dashboard.welcomeTitle")}</h2>
                 <p className="welcome-text">
-                  Upload a field image to analyze crop lodging severity using our advanced AI model
+                  {t("dashboard.welcomeText")}
                 </p>
               </div>
 
@@ -807,26 +835,26 @@ function App() {
                 <div className="upload-column">
                   <div className="upload-card">
                     <div className="card-header">
-                      <h3>Upload Image</h3>
-                      <span className="badge">Required</span>
+                      <h3>{t("upload.uploadImage")}</h3>
+                      <span className="badge">{t("upload.required")}</span>
                     </div>
                     
                     <div {...getRootProps()} className="dropzone">
                       <input {...getInputProps()} />
                       <div className="dropzone-content">
                         <div className="upload-icon">📸</div>
-                        <h4>Drag & Drop</h4>
-                        <p>Click or drag image to upload</p>
-                        <span className="file-types">Supports: JPG, PNG</span>
-                        <button className="browse-btn">Browse Files</button>
+                        <h4>{t("upload.dragDrop")}</h4>
+                        <p>{t("upload.clickOrDrag")}</p>
+                        <span className="file-types">{t("upload.supports")}</span>
+                        <button className="browse-btn">{t("upload.browseFiles")}</button>
                       </div>
                     </div>
 
                     {image && (
                       <div className="preview-card">
                         <div className="preview-header">
-                          <h4>Preview</h4>
-                          <span className="preview-badge">Uploaded</span>
+                          <h4>{t("upload.preview")}</h4>
+                          <span className="preview-badge">{t("upload.uploaded")}</span>
                         </div>
                         <div className="image-preview">
                           <img src={image} alt="preview" />
@@ -839,11 +867,11 @@ function App() {
                           {loading ? (
                             <>
                               <span className="spinner"></span>
-                              Analyzing...
+                              {t("upload.analyzing")}
                             </>
                           ) : (
                             <>
-                              <span>Analyze Image</span>
+                              <span>{t("upload.analyzeImage")}</span>
                               <span className="btn-icon">→</span>
                             </>
                           )}
@@ -857,21 +885,21 @@ function App() {
                   {loading && (
                     <div className="loading-card">
                       <div className="loading-spinner"></div>
-                      <h3>Processing Image</h3>
-                      <p>Our AI model is analyzing your crop image...</p>
+                      <h3>{t("upload.processingImage")}</h3>
+                      <p>{t("upload.processingSubtitle")}</p>
                     </div>
                   )}
 
                   {result && !result.error && (
                     <div className="results-card">
                       <div className="results-header">
-                        <h3>Analysis Results</h3>
-                        <span className="success-badge">Complete</span>
+                        <h3>{t("results.analysisResults")}</h3>
+                        <span className="success-badge">{t("results.complete")}</span>
                       </div>
 
                       <div className="severity-meter">
                         <div className="meter-header">
-                          <span>Severity Level</span>
+                          <span>{t("results.severityLevel")}</span>
                           <span className="severity-value">{result.severity}</span>
                         </div>
                         <div className="meter-bar">
@@ -884,33 +912,33 @@ function App() {
 
                       <div className="stats-grid">
                         <div className="stat-item">
-                          <span className="stat-label">Confidence</span>
+                          <span className="stat-label">{t("results.confidence")}</span>
                           <span className="stat-value">{result.confidence}%</span>
                         </div>
                         <div className="stat-item">
-                          <span className="stat-label">Lodged Area</span>
+                          <span className="stat-label">{t("results.lodgedArea")}</span>
                           <span className="stat-value">{result.lodged_area_percent}%</span>
                         </div>
                         <div className="stat-item">
-                          <span className="stat-label">Patches</span>
+                          <span className="stat-label">{t("results.patches")}</span>
                           <span className="stat-value">{result.lodging_patches}</span>
                         </div>
                         <div className="stat-item">
-                          <span className="stat-label">Method</span>
+                          <span className="stat-label">{t("results.method")}</span>
                           <span className="stat-value">{result.method}</span>
                         </div>
                       </div>
 
                       <div className="recommendation-box">
-                        <h4>Recommendation</h4>
+                        <h4>{t("results.recommendation")}</h4>
                         <p>{result.recommendation}</p>
                       </div>
 
                       <details className="technical-details">
-                        <summary>Technical Details</summary>
+                        <summary>{t("results.technicalDetails")}</summary>
                         <div className="details-content">
-                          <p><strong>Raw Score:</strong> {result.raw_score}</p>
-                          <p><strong>Threshold:</strong> {result.threshold}</p>
+                          <p><strong>{t("results.rawScore")}</strong> {result.raw_score}</p>
+                          <p><strong>{t("results.threshold")}</strong> {result.threshold}</p>
                         </div>
                       </details>
                     </div>
@@ -918,22 +946,22 @@ function App() {
 
                   {result?.images && (
                     <div className="visual-analysis-card">
-                      <h3>Visual Analysis</h3>
+                      <h3>{t("visual.visualAnalysis")}</h3>
                       <div className="image-grid">
                         <div className="grid-item">
-                          <span className="image-label">Original</span>
+                          <span className="image-label">{t("visual.original")}</span>
                           <img src={result.images.original} alt="original" />
                         </div>
                         <div className="grid-item">
-                          <span className="image-label">Heatmap</span>
+                          <span className="image-label">{t("visual.heatmap")}</span>
                           <img src={result.images.heatmap} alt="heatmap" />
                         </div>
                         <div className="grid-item">
-                          <span className="image-label">Mask</span>
+                          <span className="image-label">{t("visual.mask")}</span>
                           <img src={result.images.mask} alt="mask" />
                         </div>
                         <div className="grid-item">
-                          <span className="image-label">Boundary</span>
+                          <span className="image-label">{t("visual.boundary")}</span>
                           <img src={result.images.boundary} alt="boundary" />
                         </div>
                       </div>
@@ -943,10 +971,10 @@ function App() {
                   {result?.error && (
                     <div className="error-card">
                       <span className="error-icon-large">⚠️</span>
-                      <h3>Analysis Failed</h3>
+                      <h3>{t("errors.analysisFailed")}</h3>
                       <p>{result.error}</p>
                       <button onClick={() => setResult(null)} className="retry-btn">
-                        Try Again
+                        {t("errors.tryAgain")}
                       </button>
                     </div>
                   )}

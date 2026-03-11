@@ -1,0 +1,120 @@
+{
+  "language": "भाषा",
+  "app": {
+    "name": "CropNetix",
+    "tagline": "एआय-आधारित पीक आरोग्य ओळख",
+    "headerSubtitle": "पीक आरोग्य बुद्धिमत्ता"
+  },
+  "auth": {
+    "login": "लॉगिन",
+    "createAccount": "खाते तयार करा",
+    "welcomeBack": "पुन्हा स्वागत आहे",
+    "signInSubtitle": "तुमच्या डॅशबोर्डवर जाण्यासाठी साइन इन करा",
+    "createAccountTitle": "खाते तयार करा",
+    "createAccountSubtitle": "स्मार्ट शेतीसाठी CropNetix मध्ये सामील व्हा",
+    "emailAddress": "ईमेल पत्ता",
+    "password": "पासवर्ड",
+    "fullNameRequired": "पूर्ण नाव *",
+    "emailAddressRequired": "ईमेल पत्ता *",
+    "phoneNumber": "फोन नंबर",
+    "farmLocation": "शेताचे ठिकाण",
+    "confirmPasswordRequired": "पासवर्डची पुष्टी *",
+    "signIn": "साइन इन",
+    "signingIn": "साइन इन होत आहे...",
+    "createAccountButton": "खाते तयार करा",
+    "creatingAccount": "खाते तयार होत आहे...",
+    "dontHaveAccount": "खाते नाही?",
+    "createOneHere": "इथे तयार करा",
+    "alreadyHaveAccount": "आधीच खाते आहे?",
+    "signInHere": "साइन इन करा",
+    "placeholders": {
+      "email": "farmer@example.com",
+      "password": "••••••••",
+      "fullName": "राम शेतकरी",
+      "phone": "+91 98765 43210",
+      "farmLocation": "जिल्हा, राज्य"
+    }
+  },
+  "features": {
+    "aiAnalysis": "एआय विश्लेषण",
+    "aiAnalysisDesc": "पीक लॉजिंग (झुकणे) अचूक ओळखण्यासाठी प्रगत डीप लर्निंग मॉडेल्स",
+    "realTimeResults": "रिअल-टाइम निकाल",
+    "realTimeResultsDesc": "गंभीरता मूल्यांकन आणि शिफारसींसह त्वरित विश्लेषण मिळवा",
+    "smartFarming": "स्मार्ट शेती",
+    "smartFarmingDesc": "तुमच्या पिकांचे संरक्षण करण्यासाठी डेटा-आधारित निर्णय घ्या"
+  },
+  "dashboard": {
+    "viewProfile": "प्रोफाइल पहा",
+    "editProfile": "प्रोफाइल संपादित करा",
+    "logout": "लॉगआउट",
+    "welcomeTitle": "पीक लॉजिंग ओळख प्रणाली",
+    "welcomeText": "आमच्या प्रगत एआय मॉडेलद्वारे पीक लॉजिंगची गंभीरता विश्लेषित करण्यासाठी शेताची प्रतिमा अपलोड करा"
+  },
+  "profile": {
+    "title": "शेतकरी प्रोफाइल",
+    "changePhoto": "फोटो बदला",
+    "fullName": "पूर्ण नाव",
+    "email": "ईमेल",
+    "phoneNumber": "फोन नंबर",
+    "farmLocation": "शेताचे ठिकाण",
+    "saveChanges": "बदल जतन करा",
+    "saving": "जतन होत आहे...",
+    "cancel": "रद्द करा",
+    "personalInfo": "वैयक्तिक माहिती",
+    "farmStats": "शेतीची आकडेवारी",
+    "notSet": "सेट केलेले नाही",
+    "notProvided": "दिलेलं नाही",
+    "totalScans": "एकूण स्कॅन्स",
+    "memberSince": "सदस्यत्वापासून",
+    "lastActive": "शेवटचे सक्रिय"
+  },
+  "upload": {
+    "uploadImage": "प्रतिमा अपलोड करा",
+    "required": "आवश्यक",
+    "dragDrop": "ड्रॅग & ड्रॉप",
+    "clickOrDrag": "अपलोड करण्यासाठी क्लिक करा किंवा प्रतिमा ड्रॅग करा",
+    "supports": "समर्थित: JPG, PNG",
+    "browseFiles": "फाईल्स निवडा",
+    "preview": "पूर्वदर्शन",
+    "uploaded": "अपलोड झाले",
+    "analyzeImage": "प्रतिमेचे विश्लेषण करा",
+    "analyzing": "विश्लेषण होत आहे...",
+    "processingImage": "प्रतिमा प्रक्रिया होत आहे",
+    "processingSubtitle": "आमचे एआय मॉडेल तुमच्या पिकाच्या प्रतिमेचे विश्लेषण करत आहे..."
+  },
+  "results": {
+    "analysisResults": "विश्लेषण निकाल",
+    "complete": "पूर्ण",
+    "severityLevel": "गंभीरता पातळी",
+    "confidence": "विश्वास",
+    "lodgedArea": "लॉज्ड क्षेत्र",
+    "patches": "पॅचेस",
+    "method": "पद्धत",
+    "recommendation": "शिफारस",
+    "technicalDetails": "तांत्रिक तपशील",
+    "rawScore": "रॉ स्कोअर:",
+    "threshold": "थ्रेशहोल्ड:"
+  },
+  "visual": {
+    "visualAnalysis": "दृश्य विश्लेषण",
+    "original": "मूळ",
+    "heatmap": "हीटमॅप",
+    "mask": "मास्क",
+    "boundary": "सीमा"
+  },
+  "errors": {
+    "analysisFailed": "विश्लेषण अयशस्वी",
+    "tryAgain": "पुन्हा प्रयत्न करा",
+    "serverConnectionFailed": "सर्व्हरशी कनेक्शन अयशस्वी",
+    "predictionFailed": "भविष्यवाणी अयशस्वी",
+    "invalidLogin": "लॉगिन माहिती चुकीची आहे",
+    "fillRequired": "कृपया सर्व आवश्यक फील्ड भरा",
+    "passwordsDontMatch": "पासवर्ड जुळत नाहीत",
+    "passwordTooShort": "पासवर्ड किमान 6 अक्षरांचा असावा",
+    "registrationSuccess": "नोंदणी यशस्वी! कृपया लॉगिन करा.",
+    "registrationFailed": "नोंदणी अयशस्वी",
+    "failedToConnect": "सर्व्हरशी कनेक्ट होऊ शकले नाही",
+    "profileUpdated": "प्रोफाइल यशस्वीरीत्या अपडेट झाले!",
+    "failedToUpdateProfile": "प्रोफाइल अपडेट अयशस्वी"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "language": "भाषा",
+  "app": {
+    "name": "CropNetix",
+    "tagline": "एआई-संचालित फसल स्वास्थ्य पहचान",
+    "headerSubtitle": "फसल स्वास्थ्य बुद्धिमत्ता"
+  },
+  "auth": {
+    "login": "लॉगिन",
+    "createAccount": "खाता बनाएँ",
+    "welcomeBack": "वापसी पर स्वागत है",
+    "signInSubtitle": "अपने डैशबोर्ड को जारी रखने के लिए साइन इन करें",
+    "createAccountTitle": "खाता बनाएँ",
+    "createAccountSubtitle": "स्मार्ट खेती के लिए CropNetix से जुड़ें",
+    "emailAddress": "ईमेल पता",
+    "password": "पासवर्ड",
+    "fullNameRequired": "पूरा नाम *",
+    "emailAddressRequired": "ईमेल पता *",
+    "phoneNumber": "फ़ोन नंबर",
+    "farmLocation": "खेत का स्थान",
+    "confirmPasswordRequired": "पासवर्ड की पुष्टि *",
+    "signIn": "साइन इन",
+    "signingIn": "साइन इन हो रहा है...",
+    "createAccountButton": "खाता बनाएँ",
+    "creatingAccount": "खाता बनाया जा रहा है...",
+    "dontHaveAccount": "क्या आपका खाता नहीं है?",
+    "createOneHere": "यहाँ बनाएँ",
+    "alreadyHaveAccount": "पहले से खाता है?",
+    "signInHere": "साइन इन करें",
+    "placeholders": {
+      "email": "farmer@example.com",
+      "password": "••••••••",
+      "fullName": "राम किसान",
+      "phone": "+91 98765 43210",
+      "farmLocation": "जिला, राज्य"
+    }
+  },
+  "features": {
+    "aiAnalysis": "एआई विश्लेषण",
+    "aiAnalysisDesc": "फसल गिरने (लॉजिंग) का सटीक पता लगाने के लिए उन्नत डीप-लर्निंग मॉडल",
+    "realTimeResults": "रीयल-टाइम परिणाम",
+    "realTimeResultsDesc": "गंभीरता आकलन और सिफारिशों के साथ तुरंत विश्लेषण प्राप्त करें",
+    "smartFarming": "स्मार्ट खेती",
+    "smartFarmingDesc": "अपनी फसलों की रक्षा के लिए डेटा-आधारित निर्णय लें"
+  },
+  "dashboard": {
+    "viewProfile": "प्रोफ़ाइल देखें",
+    "editProfile": "प्रोफ़ाइल संपादित करें",
+    "logout": "लॉगआउट",
+    "welcomeTitle": "फसल लॉजिंग पहचान प्रणाली",
+    "welcomeText": "हमारे उन्नत एआई मॉडल के माध्यम से फसल लॉजिंग की गंभीरता का विश्लेषण करने के लिए खेत की छवि अपलोड करें"
+  },
+  "profile": {
+    "title": "किसान प्रोफ़ाइल",
+    "changePhoto": "फ़ोटो बदलें",
+    "fullName": "पूरा नाम",
+    "email": "ईमेल",
+    "phoneNumber": "फ़ोन नंबर",
+    "farmLocation": "खेत का स्थान",
+    "saveChanges": "परिवर्तन सहेजें",
+    "saving": "सहेजा जा रहा है...",
+    "cancel": "रद्द करें",
+    "personalInfo": "व्यक्तिगत जानकारी",
+    "farmStats": "खेत के आँकड़े",
+    "notSet": "सेट नहीं है",
+    "notProvided": "प्रदान नहीं किया",
+    "totalScans": "कुल स्कैन",
+    "memberSince": "सदस्यता से",
+    "lastActive": "अंतिम सक्रिय"
+  },
+  "upload": {
+    "uploadImage": "छवि अपलोड करें",
+    "required": "आवश्यक",
+    "dragDrop": "खींचें और छोड़ें",
+    "clickOrDrag": "अपलोड करने के लिए क्लिक करें या छवि खींचें",
+    "supports": "समर्थित: JPG, PNG",
+    "browseFiles": "फ़ाइलें चुनें",
+    "preview": "पूर्वावलोकन",
+    "uploaded": "अपलोड हो गया",
+    "analyzeImage": "छवि का विश्लेषण करें",
+    "analyzing": "विश्लेषण हो रहा है...",
+    "processingImage": "छवि प्रोसेस हो रही है",
+    "processingSubtitle": "हमारा एआई मॉडल आपकी फसल की छवि का विश्लेषण कर रहा है..."
+  },
+  "results": {
+    "analysisResults": "विश्लेषण परिणाम",
+    "complete": "पूर्ण",
+    "severityLevel": "गंभीरता स्तर",
+    "confidence": "विश्वास",
+    "lodgedArea": "लॉज्ड क्षेत्र",
+    "patches": "पैच",
+    "method": "विधि",
+    "recommendation": "सिफारिश",
+    "technicalDetails": "तकनीकी विवरण",
+    "rawScore": "रॉ स्कोर:",
+    "threshold": "थ्रेशोल्ड:"
+  },
+  "visual": {
+    "visualAnalysis": "दृश्य विश्लेषण",
+    "original": "मूल",
+    "heatmap": "हीटमैप",
+    "mask": "मास्क",
+    "boundary": "सीमा"
+  },
+  "errors": {
+    "analysisFailed": "विश्लेषण विफल",
+    "tryAgain": "फिर से प्रयास करें",
+    "serverConnectionFailed": "सर्वर से कनेक्शन विफल",
+    "predictionFailed": "पूर्वानुमान विफल",
+    "invalidLogin": "लॉगिन जानकारी गलत है",
+    "fillRequired": "कृपया सभी आवश्यक फ़ील्ड भरें",
+    "passwordsDontMatch": "पासवर्ड मेल नहीं खाते",
+    "passwordTooShort": "पासवर्ड कम से कम 6 अक्षरों का होना चाहिए",
+    "registrationSuccess": "पंजीकरण सफल! कृपया लॉगिन करें।",
+    "registrationFailed": "पंजीकरण विफल",
+    "failedToConnect": "सर्वर से कनेक्ट नहीं हो सका",
+    "profileUpdated": "प्रोफ़ाइल सफलतापूर्वक अपडेट हुई!",
+    "failedToUpdateProfile": "प्रोफ़ाइल अपडेट नहीं हो सकी"
+  }
+}

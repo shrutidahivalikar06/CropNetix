@@ -1,0 +1,120 @@
+{
+  "language": "Language",
+  "app": {
+    "name": "CropNetix",
+    "tagline": "AI-Powered Crop Health Detection",
+    "headerSubtitle": "Crop Health Intelligence"
+  },
+  "auth": {
+    "login": "Login",
+    "createAccount": "Create Account",
+    "welcomeBack": "Welcome Back",
+    "signInSubtitle": "Sign in to continue to your dashboard",
+    "createAccountTitle": "Create Account",
+    "createAccountSubtitle": "Join CropNetix for smart farming",
+    "emailAddress": "Email Address",
+    "password": "Password",
+    "fullNameRequired": "Full Name *",
+    "emailAddressRequired": "Email Address *",
+    "phoneNumber": "Phone Number",
+    "farmLocation": "Farm Location",
+    "confirmPasswordRequired": "Confirm Password *",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "createAccountButton": "Create Account",
+    "creatingAccount": "Creating Account...",
+    "dontHaveAccount": "Don't have an account?",
+    "createOneHere": "Create one here",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInHere": "Sign in",
+    "placeholders": {
+      "email": "farmer@example.com",
+      "password": "••••••••",
+      "fullName": "John Farmer",
+      "phone": "+91 98765 43210",
+      "farmLocation": "District, State"
+    }
+  },
+  "features": {
+    "aiAnalysis": "AI Analysis",
+    "aiAnalysisDesc": "Advanced deep learning models for accurate crop lodging detection",
+    "realTimeResults": "Real-time Results",
+    "realTimeResultsDesc": "Get instant analysis with severity assessment and recommendations",
+    "smartFarming": "Smart Farming",
+    "smartFarmingDesc": "Make data-driven decisions to protect your crops"
+  },
+  "dashboard": {
+    "viewProfile": "View Profile",
+    "editProfile": "Edit Profile",
+    "logout": "Logout",
+    "welcomeTitle": "Crop Lodging Detection System",
+    "welcomeText": "Upload a field image to analyze crop lodging severity using our advanced AI model"
+  },
+  "profile": {
+    "title": "Farmer Profile",
+    "changePhoto": "Change Photo",
+    "fullName": "Full Name",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "farmLocation": "Farm Location",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "personalInfo": "Personal Information",
+    "farmStats": "Farm Statistics",
+    "notSet": "Not set",
+    "notProvided": "Not provided",
+    "totalScans": "Total Scans",
+    "memberSince": "Member Since",
+    "lastActive": "Last Active"
+  },
+  "upload": {
+    "uploadImage": "Upload Image",
+    "required": "Required",
+    "dragDrop": "Drag & Drop",
+    "clickOrDrag": "Click or drag image to upload",
+    "supports": "Supports: JPG, PNG",
+    "browseFiles": "Browse Files",
+    "preview": "Preview",
+    "uploaded": "Uploaded",
+    "analyzeImage": "Analyze Image",
+    "analyzing": "Analyzing...",
+    "processingImage": "Processing Image",
+    "processingSubtitle": "Our AI model is analyzing your crop image..."
+  },
+  "results": {
+    "analysisResults": "Analysis Results",
+    "complete": "Complete",
+    "severityLevel": "Severity Level",
+    "confidence": "Confidence",
+    "lodgedArea": "Lodged Area",
+    "patches": "Patches",
+    "method": "Method",
+    "recommendation": "Recommendation",
+    "technicalDetails": "Technical Details",
+    "rawScore": "Raw Score:",
+    "threshold": "Threshold:"
+  },
+  "visual": {
+    "visualAnalysis": "Visual Analysis",
+    "original": "Original",
+    "heatmap": "Heatmap",
+    "mask": "Mask",
+    "boundary": "Boundary"
+  },
+  "errors": {
+    "analysisFailed": "Analysis Failed",
+    "tryAgain": "Try Again",
+    "serverConnectionFailed": "Server connection failed",
+    "predictionFailed": "Prediction failed",
+    "invalidLogin": "Invalid login credentials",
+    "fillRequired": "Please fill in all required fields",
+    "passwordsDontMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "registrationSuccess": "Registration successful! Please login.",
+    "registrationFailed": "Registration failed",
+    "failedToConnect": "Failed to connect to server",
+    "profileUpdated": "Profile updated successfully!",
+    "failedToUpdateProfile": "Failed to update profile"
+  }
+}
