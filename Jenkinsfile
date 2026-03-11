@@ -3,7 +3,7 @@ pipeline{
   stages{
     stage('Build Docker Image'){
       steps{
-        bat'docker build -t Cropnetix .'
+        bat 'docker build -t Cropnetix .'
       }
     }
     stage('Run Container'){
